@@ -1,4 +1,5 @@
-# ex: FNFJSONFIX.py "thunderstorm-hard.json"
+# ex: FNFJSONFIX.py "hard-2-break-hard.json"
+# or just drop the json into this script
 
 # MADED BY RALTYRO
 #
@@ -32,8 +33,8 @@ def usage():
 	sys.exit(1)
 
 excludeKey = ['sections']
-def decode(file,strict,keys):
-	file = json.loads(open(file).read())
+def decode(file,strict,keys,noDup,reArrange):
+	file = json.loads(open(file).read().strip())
 	file = file if isinstance(file["song"],str) else file["song"]
 	
 	chart = {}
@@ -113,7 +114,7 @@ def decode(file,strict,keys):
 			while len(sections)-1 < section:
 				sections.append(sections[-1].copy())
 		
-		v[0] = int((v[0]/(stepCrochet/6))*(stepCrochet / 6))
+		if (reArrange): v[0] = int((v[0]/(stepCrochet/4))*(stepCrochet / 4))
 		
 		if sections[section]["mustHitSection"] != notesMHS[i]:
 			v[1] = v[1]-keys if v[1] >= keys-1 else v[1]+keys
@@ -122,12 +123,12 @@ def decode(file,strict,keys):
 		# im lazy
 		if plr:
 			if not(str(v[0]) in notesPOS1): notesPOS1[str(v[0])] = []
-			if listFind(notesPOS1[str(v[0])],v[1]) == -1:
+			if listFind(notesPOS1[str(v[0])],v[1]) == -1 or not noDup:
 				sections[section]["sectionNotes"].append(v)
 				notesPOS1[str(v[0])].append(v[1])
 		else:
 			if not(str(v[0]) in notesPOS2): notesPOS2[str(v[0])] = []
-			if listFind(notesPOS2[str(v[0])],v[1]) == -1:
+			if listFind(notesPOS2[str(v[0])],v[1]) == -1 or not noDup:
 				sections[section]["sectionNotes"].append(v)
 				notesPOS2[str(v[0])].append(v[1])
 		
@@ -174,6 +175,16 @@ def main():
 		
 		print("Selected Option : " + ("Stricted" if strict else "Not Stricted"))
 		
+		noDup = input(linethingylol + "\nDo you want your charts to not have Duplicated Notes? (Default is Yes)\n Yes/1\n No/2\n\n").lower()
+		noDup = False if (noDup.find("No") != -1 or noDup.find("2") != -1) else True
+		
+		print("Selected Option : " + ("Yes" if noDup else "No"))
+			
+		reArrange = input(linethingylol + "\nDo you want your charts to be Rearranged (by 4 stepCrochets)? (Default is Yes)\n Yes/1\n No/2\n\n").lower()
+		reArrange = False if (reArrange.find("No") != -1 or reArrange.find("2") != -1) else True
+
+		print("Selected Option : " + ("Yes" if reArrange else "No"))
+		
 		keys = input(linethingylol + "\nWhat's the Chart Keys? (Number here, Default is 4)\n\n")
 		keys = 4 if keys.strip() == '' else int(keys)
 		
@@ -181,7 +192,7 @@ def main():
 		
 		print(linethingylol)
 		
-		final = decode(infile,strict,keys)
+		final = decode(infile,strict,keys,noDup,reArrange)
 		print(final)
 		
 		if not os.path.exists("_FNFJSONCLEAN-results"): os.mkdir("_FNFJSONCLEAN-results")
