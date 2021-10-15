@@ -1,5 +1,4 @@
-# ex: FNFJSONCLEAN.py "hard-2-break-hard.json"
-#  or just drop the json into this script
+# ex: FNFJSONFIX.py "thunderstorm-hard.json"
 
 # MADED BY RALTYRO
 #
@@ -11,6 +10,7 @@ import os
 import json
 
 FNF_EXT = ".json"
+linethingylol = "---------------------------------------------------------"
 
 # FUNCTIONS!!!
 
@@ -164,29 +164,29 @@ def main():
 		
 		#chart_type = input("Which engine does this chart maded from? \n(auto, kade, psych, fnf)")
 		
-		encode_type = input("\nWhich json encode type would you like?\n Compact/1 (Recommended, Not Readable, Usually below 20kb file size)\n Clean/2 (Readable, Usually above 50kb file size)\n\n").lower()
+		encode_type = input(linethingylol + "\nWhich json encode type would you like? (Default is Compact)\n Compact/1 (Recommended, Not Readable, Usually below 20kb file size)\n Clean/2 (Readable, Usually above 50kb file size)\n\n").lower()
 		encode_type = 2 if (encode_type.find("clean") != -1 or encode_type.find("2") != -1) else 1
 		
 		print("Selected Option : " + ("Clean" if encode_type == 2 else "Compact"))
 		
-		strict = input("\nDo you want the chart to be stricted? (No Custom Values)\n Yes/1\n No/2\n\n")
+		strict = input(linethingylol + "\nDo you want the chart to be stricted? (No Custom Values, Default is Stricted)\n Yes/1\n No/2\n\n").lower()
 		strict = False if (strict.find("No") != -1 or strict.find("2") != -1) else True
 		
 		print("Selected Option : " + ("Stricted" if strict else "Not Stricted"))
 		
-		keys = input("\nWhat's the Chart Keys?\n (Input Number Here)\n")
+		keys = input(linethingylol + "\nWhat's the Chart Keys? (Number here, Default is 4)\n\n")
 		keys = 4 if keys.strip() == '' else int(keys)
 		
 		print("Selected Option : " + str(keys))
 		
-		print("\n\n\n")
+		print(linethingylol)
 		
 		final = decode(infile,strict,keys)
 		print(final)
 		
-		if not os.path.exists("FNFJSONCLEAN-results"): os.mkdir("FNFJSONCLEAN-results")
+		if not os.path.exists("_FNFJSONCLEAN-results"): os.mkdir("_FNFJSONCLEAN-results")
 		
-		outfile = open("FNFJSONCLEAN-results/" + infile_name + ".json",'w')
+		outfile = open("_FNFJSONCLEAN-results/" + infile_name + FNF_EXT,'w')
 		if encode_type == 1:
 			outfile.write(json.dumps({"song":final},separators=(',', ':')))
 		else:
