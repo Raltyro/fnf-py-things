@@ -1,4 +1,5 @@
-# ex: FNFJSONFIX.py "thunderstorm-hard.json"
+# ex: FNFJSONCLEAN.py "hard-2-break.json"
+#  or just drop the json into this script
 
 # MADED BY RALTYRO
 #
