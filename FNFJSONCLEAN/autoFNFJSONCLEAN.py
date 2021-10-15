@@ -1,5 +1,5 @@
 # this automatically clean every charts in the folder and create a new folder named "_FNFJSONCLEAN-results"
-# in the folder you just input or drop saves it to it
+# in the folder you just input or drop and then saves it to it
 # ex: FNFJSONFIX.py "game/assets/preload/data"
 #  or drop the folder into this script
 
