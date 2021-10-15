@@ -1,5 +1,7 @@
+# this automatically clean every charts in the folder and create a new folder named "_FNFJSONCLEAN-results"
+# in the folder you just input or drop saves it to it
 # ex: FNFJSONFIX.py "game/assets/preload/data"
-# this automatically clean every charts in the folder and saves it to other folder called "_FNFJSONCLEAN-results"
+#  or drop the folder into this script
 
 # MADED BY RALTYRO
 #
@@ -33,7 +35,7 @@ def usage():
 	sys.exit(1)
 
 excludeKey = ['sections']
-def decode(file,strict,keys):
+def decode(file,strict,keys,noDup,reArrange):
 	file = json.loads(open(file).read().strip())
 	file = file if isinstance(file["song"],str) else file["song"]
 	
@@ -114,7 +116,7 @@ def decode(file,strict,keys):
 			while len(sections)-1 < section:
 				sections.append(sections[-1].copy())
 		
-		v[0] = int((v[0]/(stepCrochet/6))*(stepCrochet / 6))
+		if (reArrange): v[0] = int((v[0]/(stepCrochet/4))*(stepCrochet / 4))
 		
 		if sections[section]["mustHitSection"] != notesMHS[i]:
 			v[1] = v[1]-keys if v[1] >= keys-1 else v[1]+keys
@@ -123,12 +125,12 @@ def decode(file,strict,keys):
 		# im lazy
 		if plr:
 			if not(str(v[0]) in notesPOS1): notesPOS1[str(v[0])] = []
-			if listFind(notesPOS1[str(v[0])],v[1]) == -1:
+			if listFind(notesPOS1[str(v[0])],v[1]) == -1 or not noDup:
 				sections[section]["sectionNotes"].append(v)
 				notesPOS1[str(v[0])].append(v[1])
 		else:
 			if not(str(v[0]) in notesPOS2): notesPOS2[str(v[0])] = []
-			if listFind(notesPOS2[str(v[0])],v[1]) == -1:
+			if listFind(notesPOS2[str(v[0])],v[1]) == -1 or not noDup:
 				sections[section]["sectionNotes"].append(v)
 				notesPOS2[str(v[0])].append(v[1])
 		
@@ -176,6 +178,16 @@ def main():
 			strict = False if (strict.find("No") != -1 or strict.find("2") != -1) else True
 
 			print("Selected Option : " + ("Stricted" if strict else "Not Stricted"))
+			
+			noDup = input(linethingylol + "\nDo you want your charts to not have Duplicated Notes? (Default is Yes)\n Yes/1\n No/2\n\n").lower()
+			noDup = False if (noDup.find("No") != -1 or noDup.find("2") != -1) else True
+
+			print("Selected Option : " + ("Yes" if noDup else "No"))
+			
+			reArrange = input(linethingylol + "\nDo you want your charts to be Rearranged (by 4 stepCrochets)? (Default is Yes)\n Yes/1\n No/2\n\n").lower()
+			reArrange = False if (reArrange.find("No") != -1 or reArrange.find("2") != -1) else True
+
+			print("Selected Option : " + ("Yes" if reArrange else "No"))
 
 			keysNecessary = input(linethingylol + "\nIs each of the charts have different mania keys? (Default is No)\n Yes/1\n No/2\n\n").lower()
 			keysNecessary = True if (keysNecessary.find("Yes") != -1 or keysNecessary.find("1") != -1) else False
@@ -202,7 +214,7 @@ def main():
 						
 						print(linethingylol)
 						
-						final = decode(par + "/" + dir + "/" + file,strict,keys)
+						final = decode(par + "/" + dir + "/" + file,strict,keys,noDup,reArrange)
 						print(str(final) + "\n" + linethingylol)
 						
 						result = open(parResults + "/" + dirName + "/" + os.path.splitext(fileName)[0] + FNF_EXT,'w')
