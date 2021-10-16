@@ -288,7 +288,7 @@ def main():
 						
 				if i < 1: os.rmdir(parResults + "/" + dirName)
 			
-			input("Finished! Check the folder '" + parResults + "/" + dirName + "'\nFeel free to exit this\n")
+			input("Finished! Check the folder '" + parResults + "'\nFeel free to exit this\n")
 		else:
 			usage()
 			
