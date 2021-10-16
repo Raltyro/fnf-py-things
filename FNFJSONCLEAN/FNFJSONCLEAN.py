@@ -243,16 +243,20 @@ def main():
 		print(linethingylol)
 		
 		try:
-			final = decode(infile,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engine_type,engine_vers)
-			print(str(final) + "\n" + linethingylol)
+			final = decode(par + "/" + dir + "/" + file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engine_type,engine_vers)
+			if encode_type == 1:
+				final = json.dumps({"song":final},separators=(',', ':'))
+			else:
+				final = json.dumps({"song":final},separators=(',', ':'),sort_keys=True,indent=4).replace("    ","	")
+			print(final + "\n" + linethingylol)
 
 			if not os.path.exists("_FNFJSONCLEAN-results"): os.mkdir("_FNFJSONCLEAN-results")
 
 			outfile = open("_FNFJSONCLEAN-results/" + infile_name + FNF_EXT,'w')
 			if encode_type == 1:
-				outfile.write(json.dumps({"song":final},separators=(',', ':')))
+				outfile.write(final)
 			else:
-				outfile.write(json.dumps({"song":final},separators=(',', ':'),sort_keys=True,indent=4).replace("    ","	"))
+				outfile.write(final)
 			outfile.close()
 		except:
 			print("Something went wrong while trying to clean '" + par + "/" + dir + "/" + file + "'")
