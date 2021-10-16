@@ -118,7 +118,7 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 	i = 0
 	for v in notes:
 		section = -1
-		time = 33
+		time = -67
 		stepCrochet = (((60 / float(changeBPMS[0])) * 1000) / 4)
 		while clamp(v[0],0,9999999999) > time:
 			section += 1
@@ -248,19 +248,25 @@ def main():
 		
 		print(linethingylol)
 		
-		final = decode(infile,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engine_type,engine_vers)
-		print(final)
-		
-		if not os.path.exists("_FNFJSONCLEAN-results"): os.mkdir("_FNFJSONCLEAN-results")
-		
-		outfile = open("_FNFJSONCLEAN-results/" + infile_name + FNF_EXT,'w')
-		if encode_type == 1:
-			outfile.write(json.dumps({"song":final},separators=(',', ':')))
+		try:
+			final = decode(infile,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engine_type,engine_vers)
+			print(str(final) + "\n" + linethingylol)
+
+			if not os.path.exists("_FNFJSONCLEAN-results"): os.mkdir("_FNFJSONCLEAN-results")
+
+			outfile = open("_FNFJSONCLEAN-results/" + infile_name + FNF_EXT,'w')
+			if encode_type == 1:
+				outfile.write(json.dumps({"song":final},separators=(',', ':')))
+			else:
+				outfile.write(json.dumps({"song":final},separators=(',', ':'),sort_keys=True,indent=4).replace("    ","	"))
+			outfile.close()
+		except:
+			print("Something went wrong while trying to clean '" + par + "/" + dir + "/" + file + "'")
+			input("Plesae check the json if its a fnf song format, otherwise send the json to Raltyro!\n")
 		else:
-			outfile.write(json.dumps({"song":final},separators=(',', ':'),sort_keys=True,indent=4).replace("    ","	"))
-		outfile.close()
+			input("Finished! Check the folder '" + "_FNFJSONCLEAN-results" + "'\nFeel free to exit this")
+		print(linethingylol)
 		
-		input("Finished! Check the folder '" + "_FNFJSONCLEAN-results" + "'\nFeel free to exit this")
 	else:
 		usage()
 
