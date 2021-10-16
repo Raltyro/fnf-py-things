@@ -5,9 +5,9 @@
 
 # MADED BY RALTYRO
 #
-# if you delete this i will #### you and ####
-# no regrets
+# if you delete this i will come to your house and #### you
 
+from inspect import isfunction
 import sys
 import os
 import json
@@ -121,9 +121,9 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 	i = 0
 	for v in notes:
 		section = -1
-		time = -67
+		time = 0
 		stepCrochet = (((60 / float(changeBPMS[0])) * 1000) / 4)
-		while clamp(v[0],0,9999999999) > time:
+		while clamp(v[0],0,9999999999) > time-(stepCrochet/3):
 			section += 1
 			stepCrochet = (((60 / float(changeBPMS[-1] if section >= len(changeBPMS) else changeBPMS[section])) * 1000) / 4)
 			time += stepCrochet * (changeLIS[-1] if section >= len(changeLIS) else int(changeLIS[section]))
@@ -132,13 +132,14 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 			while len(sections)-1 < section:
 				sections.append(sections[-1].copy())
 		
-		if (reArrange): v[0] = int((v[0]/(stepCrochet/4))*(stepCrochet / 4))
+		# im lazy
+		ogv0 = v[0]
+		v[0] = int((v[0]/(stepCrochet/4))*(stepCrochet / 4))
 		
 		if sections[section]["mustHitSection"] != notesMHS[i]:
 			v[1] = v[1]-keys if v[1] > keys-1 else v[1]+keys
 		
 		plr = True if v[1] >= keys-1 else False
-		# im lazy
 		if plr:
 			if not(str(v[0]) in notesPOS1): notesPOS1[str(v[0])] = []
 			if listFind(notesPOS1[str(v[0])],v[1]) == -1 or not noDup:
@@ -149,6 +150,8 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 			if listFind(notesPOS2[str(v[0])],v[1]) == -1 or not noDup:
 				sections[section]["sectionNotes"].append(v)
 				notesPOS2[str(v[0])].append(v[1])
+		
+		if not reArrange: v[0] = ogv0
 		
 		i += 1
 	
@@ -182,9 +185,17 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 				event["position"] = round(event["position"])
 				
 				chart["eventObjects"].append(event)
+			
+			if len(chart["eventObjects"]) < 1: del chart["eventObjects"]
 				
 	
 	return chart
+	
+def inputfoo(str,foo,foo2 = None):
+	r = input(str)
+	if isfunction(foo2) : r = foo2(r)
+	r = foo(r)
+	return r
 
 def main():
 	dirs = []
@@ -198,42 +209,28 @@ def main():
 			parResults = par + "/_FNFJSONCLEAN-results"
 			if not os.path.exists(parResults): os.mkdir(parResults)
 			
-			engine_type = input(linethingylol + "\nWhich engine where this chart maded from? (IMPORTANT)\n Kade Engine/1\n FNF/2\n Others/3\n\n")
-			engine_type = 1 if (engine_type.find("k") != -1 or engine_type.find("1") != -1) else 2 if (engine_type.find("fnf") != -1 or engine_type.find("2") != -1) else 3
-			
+			engine_type = inputfoo(linethingylol + "\nWhich engine where this chart maded from? (IMPORTANT)\n Kade Engine/1\n FNF/2\n Others/3\n\n",lambda v: 1 if (v.find("k") != -1 or v.find("1") != -1) else 2 if (v.find("fnf") != -1 or v.find("2") != -1) else 3,lambda v:v.lower())
 			print("Selected Option : " + ("Kade Engine" if engine_type == 1 else "FNF" if engine_type == 2 else "Others"))
 			
 			# fuck you kade /j
 			engine_vers = 0
 			if engine_type == 1:
-				engine_vers = input(linethingylol + "\nIs your Kade Engine Version is above 1.6? (IMPORTANT)\n Yes/1\n No/2\n\n")
-				engine_vers = 0 if (engine_vers.find("No") != -1 or engine_vers.find("2") != -1) else 1
-			
+				engine_vers = inputfoo(linethingylol + "\nIs your Kade Engine Version is above 1.6? (IMPORTANT)\n Yes/1\n No/2\n\n",lambda v:0 if (v.find("n") != -1 or v.find("2") != -1) else 1,lambda v:v.lower())
 				print("Selected Option : " + ("Yes" if engine_vers else "No"))
-
-			encode_type = input(linethingylol + "\nWhich json encode type would you like? (Default is Compact)\n Compact/1 (Recommended, Not Readable, Usually below 20kb file size)\n Clean/2 (Readable, Usually above 50kb file size)\n\n").lower()
-			encode_type = 2 if (encode_type.find("clean") != -1 or encode_type.find("2") != -1) else 1
-
+			
+			encode_type = inputfoo(linethingylol + "\nWhich json encode type would you like? (Default is Compact)\n Compact/1 (Recommended, Half Readable, Usually below 20kb file size)\n Clean/2 (Readable, Usually above 50kb file size)\n\n",lambda v:2 if (v.find("cl") != -1 or v.find("2") != -1) else 1,lambda v:v.lower())
 			print("Selected Option : " + ("Clean" if encode_type == 2 else "Compact"))
 
-			strict = input(linethingylol + "\nDo you want the chart to be stricted? (No Custom Values, Default is Stricted)\n Yes/1\n No/2\n\n").lower()
-			strict = False if (strict.find("No") != -1 or strict.find("2") != -1) else True
-
-			print("Selected Option : " + ("Stricted" if strict else "Not Stricted"))
+			strict = inputfoo(linethingylol + "\nDo you want the chart to be stricted? (No Custom Values, Default is Stricted)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
+			print("Selected Option : " + ("Yes" if strict else "No"))
 			
-			noDup = input(linethingylol + "\nDo you want your charts to not have Duplicated Notes? (Default is Yes)\n Yes/1\n No/2\n\n").lower()
-			noDup = False if (noDup.find("No") != -1 or noDup.find("2") != -1) else True
-
+			noDup = inputfoo(linethingylol + "\nDo you want your charts to not have Duplicated Notes? (Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
 			print("Selected Option : " + ("Yes" if noDup else "No"))
 			
-			reArrange = input(linethingylol + "\nDo you want your charts to be Rearranged (by 4 stepCrochets)? (Default is Yes)\n Yes/1\n No/2\n\n").lower()
-			reArrange = False if (reArrange.find("No") != -1 or reArrange.find("2") != -1) else True
-
+			reArrange = inputfoo(linethingylol + "\nDo you want your charts to be Rearranged (by 4 stepCrochets)? (Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
 			print("Selected Option : " + ("Yes" if reArrange else "No"))
 
-			keysNecessary = input(linethingylol + "\nIs each of the charts have different mania keys? (Default is No)\n Yes/1\n No/2\n\n").lower()
-			keysNecessary = True if (keysNecessary.find("Yes") != -1 or keysNecessary.find("1") != -1) else False
-
+			keysNecessary = inputfoo(linethingylol + "\nIs each of the charts have different mania keys beside 4? (Default is No)\n Yes/1\n No/2\n\n",lambda v:True if (v.find("y") != -1 or v.find("1") != -1) else False,lambda v:v.lower())
 			print("Selected Option : " + ("Yes" if keysNecessary else "No"))
 			
 			isLISSupport = False
@@ -243,14 +240,11 @@ def main():
 			if engine_type == 1 and engine_vers == 0: isCBPMSupport = False
 			
 			if engine_type != 1:
-				isLISSupport = input(linethingylol + "\nIs your chart have lengthInStep Support? (If you're using Kade Engine, pick no, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n")
-				isLISSupport = False if (isLISSupport.find("No") != -1 or isLISSupport.find("2") != -1) else True
-
+				isLISSupport = inputfoo(linethingylol + "\nIs your chart have lengthInStep Support? (If you're using Kade Engine, pick no, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
 				print("Selected Option : " + ("Yes" if isLISSupport else "No"))
+			
 			if not isCBPMSupport:
-				isCBPMSupport = input(linethingylol + "\nIs your chart have changeBPM Support? (Some of the engine doesn't support this, pick no if it doesnt support changeBPM, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n")
-				isCBPMSupport = False if (isCBPMSupport.find("No") != -1 or isCBPMSupport.find("2") != -1) else True
-
+				isLISSupport = inputfoo(linethingylol + "\nIs your chart have changeBPM Support? (Some of the engine doesn't support this, pick no if it doesnt support changeBPM, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
 				print("Selected Option : " + ("Yes" if isCBPMSupport else "No"))
 
 			print(linethingylol)
@@ -268,8 +262,8 @@ def main():
 						
 						keys = 4
 						if keysNecessary:
-							keys = input(linethingylol + "\nWhat's the Chart Keys? (Number here, Default is 4)\n\n")
-							keys = 4 if keys.strip() == '' else int(keys)
+							keys = inputfoo(linethingylol + "\nWhat's the Chart Keys? (Number here, Default is 4)\n\n",lambda v:4 if v.strip() == '' else int(v))
+							print("Selected Option : " + str(keys))
 						
 						print(linethingylol)
 						
