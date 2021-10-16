@@ -221,13 +221,13 @@ def main():
 			encode_type = inputfoo(linethingylol + "\nWhich json encode type would you like? (Default is Compact)\n Compact/1 (Recommended, Half Readable, Usually below 20kb file size)\n Clean/2 (Readable, Usually above 50kb file size)\n\n",lambda v:2 if (v.find("cl") != -1 or v.find("2") != -1) else 1,lambda v:v.lower())
 			print("Selected Option : " + ("Clean" if encode_type == 2 else "Compact"))
 
-			strict = inputfoo(linethingylol + "\nDo you want the chart to be stricted? (No Custom Values, Default is Stricted)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
+			strict = inputfoo(linethingylol + "\nDo you want the chart to be stricted? (No Custom Values, Default is Stricted)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or v.find("2") != -1) else True,lambda v:v.lower())
 			print("Selected Option : " + ("Yes" if strict else "No"))
 			
-			noDup = inputfoo(linethingylol + "\nDo you want your charts to not have Duplicated Notes? (Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
+			noDup = inputfoo(linethingylol + "\nDo you want your charts to not have Duplicated Notes? (Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or v.find("2") != -1) else True,lambda v:v.lower())
 			print("Selected Option : " + ("Yes" if noDup else "No"))
 			
-			reArrange = inputfoo(linethingylol + "\nDo you want your charts to be Rearranged (by 4 stepCrochets)? (Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
+			reArrange = inputfoo(linethingylol + "\nDo you want your charts to be Rearranged (by 4 stepCrochets)? (Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or v.find("2") != -1) else True,lambda v:v.lower())
 			print("Selected Option : " + ("Yes" if reArrange else "No"))
 
 			keysNecessary = inputfoo(linethingylol + "\nIs each of the charts have different mania keys beside 4? (Default is No)\n Yes/1\n No/2\n\n",lambda v:True if (v.find("y") != -1 or v.find("1") != -1) else False,lambda v:v.lower())
@@ -240,11 +240,11 @@ def main():
 			if engine_type == 1 and engine_vers == 0: isCBPMSupport = False
 			
 			if engine_type != 1:
-				isLISSupport = inputfoo(linethingylol + "\nIs your chart have lengthInStep Support? (If you're using Kade Engine, pick no, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
+				isLISSupport = inputfoo(linethingylol + "\nIs your chart have lengthInStep Support? (If you're using Kade Engine, pick no, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or v.find("2") != -1) else True,lambda v:v.lower())
 				print("Selected Option : " + ("Yes" if isLISSupport else "No"))
 			
 			if not isCBPMSupport:
-				isLISSupport = inputfoo(linethingylol + "\nIs your chart have changeBPM Support? (Some of the engine doesn't support this, pick no if it doesnt support changeBPM, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or strict.find("2") != -1) else True,lambda v:v.lower())
+				isCBPMSupport = inputfoo(linethingylol + "\nIs your chart have changeBPM Support? (Some of the engine doesn't support this, pick no if it doesnt support changeBPM, otherwise yes, Default is Yes)\n Yes/1\n No/2\n\n",lambda v:False if (v.find("n") != -1 or v.find("2") != -1) else True,lambda v:v.lower())
 				print("Selected Option : " + ("Yes" if isCBPMSupport else "No"))
 
 			print(linethingylol)
