@@ -194,7 +194,7 @@ def main():
 		engine_type = input(linethingylol + "\nWhich engine where this chart maded from? (IMPORTANT)\n Kade Engine/1\n FNF/2\n Others/3\n\n")
 		engine_type = 1 if (engine_type.find("k") != -1 or engine_type.find("1") != -1) else 2 if (engine_type.find("fnf") != -1 or engine_type.find("2") != -1) else 3
 
-		print("Selected Option : " + ("Kade Engine" if encode_type == 1 else "FNF" if encode_type == 2 else "Others"))
+		print("Selected Option : " + ("Kade Engine" if engine_type == 1 else "FNF" if engine_type == 2 else "Others"))
 
 		# fuck you kade /j
 		engine_vers = 0
