@@ -134,7 +134,9 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 		
 		# im lazy
 		ogv0 = v[0]
-		v[0] = int((v[0]/(stepCrochet/4))*(stepCrochet / 4))
+		v[0] = int(((v[0]/(stepCrochet / 4))*(stepCrochet / 4))+1)
+		if v[2] > 67: v[2] = (int((((v[2] + v[0])/(stepCrochet / 4))*(stepCrochet / 4)) - v[0])+.5)
+		else: v[2] = 0
 		
 		if sections[section]["mustHitSection"] != notesMHS[i]:
 			v[1] = v[1]-keys if v[1] > keys-1 else v[1]+keys
@@ -276,10 +278,7 @@ def main():
 							print(final + "\n" + linethingylol)
 
 							result = open(parResults + "/" + dirName + "/" + os.path.splitext(fileName)[0] + FNF_EXT,'w')
-							if encode_type == 1:
-								result.write(final)
-							else:
-								result.write(final)
+							result.write(final)
 							result.close()
 						except:
 							print("Something went wrong while trying to clean '" + par + "/" + dir + "/" + file + "'")
