@@ -131,7 +131,9 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 		
 		# im lazy
 		ogv0 = v[0]
-		v[0] = int((v[0]/(stepCrochet/4))*(stepCrochet / 4))
+		v[0] = int(((v[0]/(stepCrochet / 4))*(stepCrochet / 4))+1)
+		if v[2] > 67: v[2] = (int((((v[2] + v[0])/(stepCrochet / 4))*(stepCrochet / 4)) - v[0])+.5)
+		else: v[2] = 0
 		
 		if sections[section]["mustHitSection"] != notesMHS[i]:
 			v[1] = v[1]-keys if v[1] > keys-1 else v[1]+keys
@@ -253,10 +255,7 @@ def main():
 			if not os.path.exists("_FNFJSONCLEAN-results"): os.mkdir("_FNFJSONCLEAN-results")
 
 			outfile = open("_FNFJSONCLEAN-results/" + infile_name + FNF_EXT,'w')
-			if encode_type == 1:
-				outfile.write(final)
-			else:
-				outfile.write(final)
+			outfile.write(final)
 			outfile.close()
 		except:
 			print("Something went wrong while trying to clean '" + par + "/" + dir + "/" + file + "'")
