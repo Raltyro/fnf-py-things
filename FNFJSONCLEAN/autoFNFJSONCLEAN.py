@@ -57,10 +57,12 @@ def decode(file,strict,keys,noDup,reArrange,isLISSupport,isCBPMSupport,engineTyp
 
 			if listFind(excludeKey,i) == -1 and not(isinstance(file[i],list)) and yes:chart[i] = file[i]
 		
-	if "bpm" in chart and (isinstance(chart["bpm"],float) or isinstance(chart["bpm"],int)): chart["bpm"] = capnumber(chart["bpm"],3)
+	if "bpm" in chart:
+		if isinstance(chart["bpm"],float): chart["bpm"] = capnumber(chart["bpm"],3)
 	else: chart["bpm"] = 160
 	
-	if "speed" in chart and (isinstance(chart["speed"],float) or isinstance(chart["speed"],int)): chart["speed"] = capnumber(chart["speed"],2)
+	if "speed" in chart:
+		if isinstance(chart["speed"],float): chart["speed"] = capnumber(chart["speed"],2)
 	else: chart["speed"] = 2
 	
 	if isinstance(file["notes"],list) and len(file["notes"]) > 0:
